@@ -432,7 +432,8 @@ def create_model(inputs, targets):
 
     with tf.variable_scope("generator") as scope:
         out_channels = int(targets.get_shape()[-1])
-        outputs = create_generator(inputs, out_channels)
+        
+        outputs = create_generator(inputs, NUM_OF_CLASSESS)
 
     # create two copies of discriminator, one for real pairs and one for fake pairs
     # they share the same underlying variables
@@ -653,10 +654,10 @@ def main():
             outputs = deprocess(model.outputs)
         else:
             raise Exception("invalid direction")
-    else:
-        inputs = deprocess(examples.inputs)
-        targets = deprocess(examples.targets)
-        outputs = deprocess(model.outputs)
+    # else:
+    #     inputs = deprocess(examples.inputs)
+    #     targets = deprocess(examples.targets)
+    #     outputs = deprocess(model.outputs)
 
     def convert(image):
         if a.aspect_ratio != 1.0:
