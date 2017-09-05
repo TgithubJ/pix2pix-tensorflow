@@ -705,7 +705,7 @@ def main():
 
     # reverse any processing on images so they can be written to disk or displayed to user
     with tf.name_scope("convert_inputs"):
-        converted_inputs = convert(inputs)
+        converted_inputs = convert(deprocess(inputs))
 
     with tf.name_scope("convert_targets"):
         converted_targets = (targets * (np.round(256 / (NUM_OF_CLASSESS-1))-1))
