@@ -214,9 +214,16 @@ def main():
         
         # Iterate over training steps.
         start_time = time.time()
+        mIoU_list = []
+        prev_mIoU = 0
         for step in range(examples.count):
 #            output, _ , _ = sess.run([raw_output, pred, update_op])
             _ , _ = sess.run([pred, update_op])
+            mIoU_value = sess.run(mIoU)
+            cur_value = (step+1)*mIoU_value-step*prev_mIoU
+            print(cur_value)
+            mIoU_list.append(cur_value)
+            prev_mIoU = mIoU_value
             if step % 100 == 0:
                 print('step {:d}'.format(step))
 
@@ -224,7 +231,8 @@ def main():
 
         duration = time.time() - start_time
         print('{:.3f} Time Consumed for {} pictures'.format(duration, examples.count))
-        print('Mean IoU: {:.3f}'.format(sess.run(mIoU)))
+        print('Mean IoU: {:.5f}'.format(sess.run(mIoU)))
+        print('Mean IoU2: {:.5f}'.format(sum(mIoU_list)/len(mIoU_list)))
         coord.request_stop()
         coord.join(threads)
     
